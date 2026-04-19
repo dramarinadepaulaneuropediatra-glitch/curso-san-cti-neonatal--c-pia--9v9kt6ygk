@@ -1,14 +1,20 @@
-/* Main App Component - Handles routing (using react-router-dom), query client and other providers - use this file to add all routes */
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import Index from './pages/Index'
-import NotFound from './pages/NotFound'
-import Layout from './components/Layout'
 
-// ONLY IMPORT AND RENDER WORKING PAGES, NEVER ADD PLACEHOLDER COMPONENTS OR PAGES IN THIS FILE
-// AVOID REMOVING ANY CONTEXT PROVIDERS FROM THIS FILE (e.g. TooltipProvider, Toaster, Sonner)
+import Layout from './components/Layout'
+import NotFound from './pages/NotFound'
+import Index from './pages/Index'
+import Module1 from './pages/modules/Module1'
+import Module2 from './pages/modules/Module2'
+import Module3 from './pages/modules/Module3'
+import Module4 from './pages/modules/Module4'
+import Module5 from './pages/modules/Module5'
+import Module6 from './pages/modules/Module6'
+import Module7 from './pages/modules/Module7'
+import Module8 from './pages/modules/Module8'
+import AdminPage from './pages/AdminPage'
 
 const App = () => (
   <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
@@ -18,7 +24,15 @@ const App = () => (
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES MUST BE ADDED HERE */}
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/module/1" element={<Module1 />} />
+          <Route path="/module/2" element={<Module2 />} />
+          <Route path="/module/3" element={<Module3 />} />
+          <Route path="/module/4" element={<Module4 />} />
+          <Route path="/module/5" element={<Module5 />} />
+          <Route path="/module/6" element={<Module6 />} />
+          <Route path="/module/7" element={<Module7 />} />
+          <Route path="/module/8" element={<Module8 />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

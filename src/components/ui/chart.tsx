@@ -100,7 +100,7 @@ const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
     React.ComponentProps<'div'> & {
-      payload: any[]
+      payload?: any[]
       hideLabel?: boolean
       hideIndicator?: boolean
       label?: string
@@ -225,7 +225,7 @@ const ChartTooltipContent = React.forwardRef<
                         </span>
                       </div>
                       {item.value && (
-                        <span className="font-mono font-medium tabular-nums text-foreground">
+                        <span className="font-mono font-medium tabular-nums text-foreground ml-4">
                           {item.value.toLocaleString()}
                         </span>
                       )}
@@ -298,7 +298,6 @@ const ChartLegendContent = React.forwardRef<
 })
 ChartLegendContent.displayName = 'ChartLegend'
 
-// Helper to extract item config from a payload.
 function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key: string) {
   if (typeof payload !== 'object' || payload === null) {
     return undefined
