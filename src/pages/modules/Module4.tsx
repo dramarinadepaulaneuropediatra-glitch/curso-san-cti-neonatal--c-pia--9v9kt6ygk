@@ -81,7 +81,7 @@ export default function Module4() {
           </div>
           <h3 className="text-xl font-bold leading-relaxed">
             Recém-nascido pré-termo (34w), 48h de vida, apresentando hipertonia e tremores leves.
-            Escore de Finnegan atual: 6.
+            Escore de Finnegan atual: 9.
           </h3>
         </div>
         <CardContent className="p-6 space-y-6">

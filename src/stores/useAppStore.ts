@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react'
+import pb from '@/lib/pocketbase/client'
 
 export type User = {
   id: string
@@ -15,39 +16,20 @@ export type AppState = {
   currentUser: User | null
   staffPassword: string
   users: User[]
+  loading: boolean
 }
 
 const defaultState: AppState = {
   currentUser: null,
   staffPassword: 'hjk',
-  users: [
-    {
-      id: 'admin',
-      name: 'Dra Marina',
-      email: 'dramarinadepaulaneuropediatra@gmail.com',
-      role: 'admin',
-      answers: {},
-      quizScore: null,
-      quizAttempts: 0,
-      completedModules: [],
-    },
-  ],
+  users: [],
+  loading: true,
 }
 
-const loadState = (): AppState => {
-  try {
-    const data = localStorage.getItem('san_app_state')
-    return data ? JSON.parse(data) : defaultState
-  } catch {
-    return defaultState
-  }
-}
-
-let state: AppState = loadState()
+let state: AppState = defaultState
 const listeners = new Set<() => void>()
 
 const notify = () => {
-  localStorage.setItem('san_app_state', JSON.stringify(state))
   listeners.forEach((l) => l())
 }
 
@@ -59,104 +41,199 @@ export const appStore = {
   getSnapshot() {
     return state
   },
-  loginStaff(name: string, password: string): boolean {
-    if (password === state.staffPassword) {
-      let user = state.users.find(
-        (u) => u.name.toLowerCase() === name.toLowerCase() && u.role === 'staff',
-      )
-      if (!user) {
-        user = {
-          id: Date.now().toString(),
-          name,
-          role: 'staff',
+  async init() {
+    try {
+      const settings = await pb.collection('settings').getOne('singleton_settings1')
+      state = { ...state, staffPassword: settings.staffPassword }
+    } catch (e) {
+      console.error('Settings not found or not created yet')
+    }
+
+    if (pb.authStore.isValid && pb.authStore.model) {
+      state = {
+        ...state,
+        currentUser: {
+          id: pb.authStore.model.id,
+          name: pb.authStore.model.name || 'Admin',
+          role: 'admin',
           answers: {},
           quizScore: null,
           quizAttempts: 0,
           completedModules: [],
+        },
+      }
+    } else {
+      const studentId = localStorage.getItem('san_student_id')
+      if (studentId) {
+        try {
+          const student = await pb.collection('students').getOne(studentId)
+          state = {
+            ...state,
+            currentUser: {
+              id: student.id,
+              name: student.name,
+              role: 'staff',
+              answers: student.answers || {},
+              quizScore: typeof student.quizScore === 'number' ? student.quizScore : null,
+              quizAttempts: student.quizAttempts || 0,
+              completedModules: student.completedModules || [],
+            },
+          }
+        } catch {
+          localStorage.removeItem('san_student_id')
         }
-        state = { ...state, users: [...state.users, user], currentUser: user }
-      } else {
-        state = { ...state, currentUser: user }
+      }
+    }
+    state = { ...state, loading: false }
+    notify()
+  },
+  async fetchUsers() {
+    try {
+      const records = await pb.collection('students').getFullList({
+        sort: '-created',
+      })
+      state = {
+        ...state,
+        users: records.map((r) => ({
+          id: r.id,
+          name: r.name,
+          role: 'staff',
+          answers: r.answers || {},
+          quizScore: typeof r.quizScore === 'number' ? r.quizScore : null,
+          quizAttempts: r.quizAttempts || 0,
+          completedModules: r.completedModules || [],
+        })),
       }
       notify()
-      return true
+    } catch {
+      /* intentionally ignored */
     }
-    return false
   },
-  loginAdmin(email: string, password?: string): boolean {
-    if (email === 'dramarinadepaulaneuropediatra@gmail.com' && password === 'Skip@Pass') {
-      const admin = state.users.find((u) => u.email === email)
-      if (admin) {
-        state = { ...state, currentUser: admin }
+  async loginStaff(name: string, password: string) {
+    if (password === state.staffPassword) {
+      try {
+        const records = await pb.collection('students').getList(1, 1, {
+          filter: `name = "${name}"`,
+        })
+        let student
+        if (records.items.length > 0) {
+          student = records.items[0]
+        } else {
+          student = await pb.collection('students').create({
+            name,
+            quizScore: null,
+            quizAttempts: 0,
+            completedModules: [],
+            answers: {},
+          })
+        }
+        localStorage.setItem('san_student_id', student.id)
+        state = {
+          ...state,
+          currentUser: {
+            id: student.id,
+            name: student.name,
+            role: 'staff',
+            answers: student.answers || {},
+            quizScore: typeof student.quizScore === 'number' ? student.quizScore : null,
+            quizAttempts: student.quizAttempts || 0,
+            completedModules: student.completedModules || [],
+          },
+        }
         notify()
         return true
+      } catch (e) {
+        console.error(e)
+        return false
       }
     }
     return false
   },
+  async loginAdmin(email: string, password?: string) {
+    try {
+      await pb.collection('users').authWithPassword(email, password || '')
+      await this.init()
+      return true
+    } catch (e) {
+      return false
+    }
+  },
   logout() {
+    pb.authStore.clear()
+    localStorage.removeItem('san_student_id')
     state = { ...state, currentUser: null }
     notify()
   },
-  changePassword(newPassword: string) {
-    state = { ...state, staffPassword: newPassword }
-    notify()
-  },
-  saveAnswer(moduleId: string, answer: string) {
-    if (state.currentUser) {
-      const updatedUser = {
-        ...state.currentUser,
-        answers: { ...state.currentUser.answers, [moduleId]: answer },
-      }
-      state = {
-        ...state,
-        currentUser: updatedUser,
-        users: state.users.map((u) => (u.id === updatedUser.id ? updatedUser : u)),
-      }
+  async changePassword(newPassword: string) {
+    try {
+      await pb.collection('settings').update('singleton_settings1', { staffPassword: newPassword })
+      state = { ...state, staffPassword: newPassword }
       notify()
+    } catch (e) {
+      console.error(e)
     }
   },
-  saveQuizScore(score: number) {
-    if (state.currentUser) {
-      const updatedUser = {
-        ...state.currentUser,
-        quizScore: score,
-        quizAttempts: (state.currentUser.quizAttempts || 0) + 1,
+  async saveAnswer(moduleId: string, answer: string) {
+    if (state.currentUser && state.currentUser.role === 'staff') {
+      const answers = { ...state.currentUser.answers, [moduleId]: answer }
+      try {
+        await pb.collection('students').update(state.currentUser.id, { answers })
+        state.currentUser.answers = answers
+        notify()
+      } catch {
+        /* intentionally ignored */
       }
-      state = {
-        ...state,
-        currentUser: updatedUser,
-        users: state.users.map((u) => (u.id === updatedUser.id ? updatedUser : u)),
-      }
-      notify()
     }
   },
-  completeModule(id: number) {
-    if (state.currentUser && !state.currentUser.completedModules.includes(id)) {
-      const updatedUser = {
-        ...state.currentUser,
-        completedModules: [...state.currentUser.completedModules, id],
+  async saveQuizScore(score: number) {
+    if (state.currentUser && state.currentUser.role === 'staff') {
+      const attempts = state.currentUser.quizAttempts + 1
+      try {
+        await pb.collection('students').update(state.currentUser.id, {
+          quizScore: score,
+          quizAttempts: attempts,
+        })
+        state.currentUser.quizScore = score
+        state.currentUser.quizAttempts = attempts
+        notify()
+      } catch {
+        /* intentionally ignored */
       }
-      state = {
-        ...state,
-        currentUser: updatedUser,
-        users: state.users.map((u) => (u.id === updatedUser.id ? updatedUser : u)),
+    }
+  },
+  async completeModule(id: number) {
+    if (
+      state.currentUser &&
+      state.currentUser.role === 'staff' &&
+      !state.currentUser.completedModules.includes(id)
+    ) {
+      const modules = [...state.currentUser.completedModules, id]
+      try {
+        await pb.collection('students').update(state.currentUser.id, {
+          completedModules: modules,
+        })
+        state.currentUser.completedModules = modules
+        notify()
+      } catch {
+        /* intentionally ignored */
       }
-      notify()
     }
   },
 }
+
+appStore.init()
 
 export function useAppStore() {
   const storeState = useSyncExternalStore(appStore.subscribe, appStore.getSnapshot)
   return {
     ...storeState,
-    loginStaff: appStore.loginStaff,
-    loginAdmin: appStore.loginAdmin,
-    logout: appStore.logout,
-    changePassword: appStore.changePassword,
-    saveAnswer: appStore.saveAnswer,
-    saveQuizScore: appStore.saveQuizScore,
-    completeModule: appStore.completeModule,
+    loginStaff: appStore.loginStaff.bind(appStore),
+    loginAdmin: appStore.loginAdmin.bind(appStore),
+    logout: appStore.logout.bind(appStore),
+    changePassword: appStore.changePassword.bind(appStore),
+    saveAnswer: appStore.saveAnswer.bind(appStore),
+    saveQuizScore: appStore.saveQuizScore.bind(appStore),
+    completeModule: appStore.completeModule.bind(appStore),
+    fetchUsers: appStore.fetchUsers.bind(appStore),
   }
 }

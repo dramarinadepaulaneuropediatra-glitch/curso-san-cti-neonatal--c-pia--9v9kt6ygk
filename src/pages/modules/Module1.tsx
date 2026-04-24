@@ -69,7 +69,7 @@ export default function Module1() {
                   Métrica
                 </TableCell>
                 <TableCell className="border-l border-t border-slate-100 print:border-slate-300 text-slate-600">
-                  Escore ponderado complexo (21 a 31 itens).
+                  Pontuação ponderada complexa (21 a 31 itens)
                 </TableCell>
                 <TableCell className="border-l border-t border-slate-100 bg-emerald-50/30 print:bg-transparent print:border-slate-300 text-slate-600">
                   Funcional (Sim/Não para 3 domínios claros).

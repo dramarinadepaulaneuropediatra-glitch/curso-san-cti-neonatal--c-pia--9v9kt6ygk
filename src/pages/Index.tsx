@@ -19,7 +19,7 @@ export default function Index() {
   const [adminEmail, setAdminEmail] = useState('')
   const [adminPassword, setAdminPassword] = useState('')
 
-  const handleStaffLogin = (e: React.FormEvent) => {
+  const handleStaffLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!staffName.trim()) {
       toast({
@@ -29,7 +29,7 @@ export default function Index() {
       })
       return
     }
-    const success = loginStaff(staffName, staffPassword)
+    const success = await loginStaff(staffName, staffPassword)
     if (success) {
       toast({ title: 'Bem-vindo', description: `Acesso liberado para ${staffName}.` })
     } else {
@@ -37,9 +37,9 @@ export default function Index() {
     }
   }
 
-  const handleAdminLogin = (e: React.FormEvent) => {
+  const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const success = loginAdmin(adminEmail, adminPassword)
+    const success = await loginAdmin(adminEmail, adminPassword)
     if (success) {
       toast({ title: 'Admin', description: 'Acesso administrativo liberado.' })
       navigate('/admin')

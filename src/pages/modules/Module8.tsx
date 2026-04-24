@@ -45,7 +45,7 @@ const questions = [
       {
         value: 'c',
         label:
-          'Redução de 6,7 dias no tempo até a alta e expressiva diminuição na necessidade de farmacoterapia.',
+          'Redução de 6,7 dias no tempo até a alta e expressiva diminuição na necessidade de farmacoterapia.',
       },
     ],
     correct: 'c',
@@ -111,37 +111,37 @@ export default function Module8() {
               Curso de Manejo da Síndrome de Abstinência Neonatal (SAN) do CTI do HJK
             </p>
             <p>
-              Carga Horária: <strong>2 horas</strong> | Aproveitamento:{' '}
+              Carga horária: <strong>2 horas</strong> | Aproveitamento:{' '}
               <strong>{score * 10}%</strong>
             </p>
           </div>
 
           <div className="mt-16 pt-8 px-8 grid grid-cols-3 gap-4">
-            <div className="text-center">
+            <div className="text-center px-2">
               <div className="border-t border-slate-400 w-full mb-2"></div>
-              <p className="text-xs font-bold text-slate-800 uppercase print:text-black">
-                Dra Marina de Paula Lima Oliveira
+              <p className="text-[11px] font-bold text-slate-800 uppercase print:text-black leading-tight">
+                Dra. Marina de Paula Lima Oliveira
               </p>
-              <p className="text-[10px] text-slate-500 print:text-slate-700">
-                Neuropediatra da Maternidade - HJK
+              <p className="text-[9px] text-slate-500 print:text-slate-700 mt-1 leading-tight">
+                neuropediatra da maternidade do Hospital Júlia Kubitischek
               </p>
             </div>
-            <div className="text-center">
+            <div className="text-center px-2">
               <div className="border-t border-slate-400 w-full mb-2"></div>
-              <p className="text-xs font-bold text-slate-800 uppercase print:text-black">
-                Dra Letícia Coelho
+              <p className="text-[11px] font-bold text-slate-800 uppercase print:text-black leading-tight">
+                Dra. Letícia Coelho
               </p>
-              <p className="text-[10px] text-slate-500 print:text-slate-700">
-                Médica Coordenadora da Maternidade - HJK
+              <p className="text-[9px] text-slate-500 print:text-slate-700 mt-1 leading-tight">
+                médica coordenadora da maternidade do Hospital Júlia Kubitischek
               </p>
             </div>
-            <div className="text-center">
+            <div className="text-center px-2">
               <div className="border-t border-slate-400 w-full mb-2"></div>
-              <p className="text-xs font-bold text-slate-800 uppercase print:text-black">
+              <p className="text-[11px] font-bold text-slate-800 uppercase print:text-black leading-tight">
                 Nilma Matozinhos
               </p>
-              <p className="text-[10px] text-slate-500 print:text-slate-700">
-                Gerente da Maternidade do CTI - HJK
+              <p className="text-[9px] text-slate-500 print:text-slate-700 mt-1 leading-tight">
+                gerente da maternidade do CTI neonatal do Hospital Júlia Kubitischek
               </p>
             </div>
           </div>

@@ -48,7 +48,7 @@ export const medications = [
     id: 5,
     name: 'Fenobarbital',
     use: 'Secundário (Adjuvante)',
-    dosage: 'Ataque: 16 mg/kg. Manutenção: 2-8 mg/kg/dia (VO/EV)',
+    dosage: 'Ataque: 10 a 15 mg/kg. Manutenção: 3 a 5 mg/kg/dia (VO/EV)',
     weaning: 'Desmame ambulatorial lento ao longo de meses.',
     prosCons:
       'Prós: Excelente para SAN por poliuso (não-opioides). Contras: Sedação excessiva, não trata sintomas GI.',
@@ -60,7 +60,7 @@ export const medications = [
     id: 6,
     name: 'Clorpromazina',
     use: 'Adjuvante (Uso Restrito)',
-    dosage: '0.5 - 0.7 mg/kg/dose a cada 6h (VO/IM)',
+    dosage: '0.5 mg a 1 mg/kg/dose até de 6 em 6 horas (VO/IM)',
     weaning: 'Desmame gradual conforme tolerado (geralmente não excede 5 dias).',
     prosCons:
       'Prós: Auxilia no controle de agitação grave em falha de outros agentes. Contras: Risco de efeitos extrapiramidais e redução do limiar convulsivo.',

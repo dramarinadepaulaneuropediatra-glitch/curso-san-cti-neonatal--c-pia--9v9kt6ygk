@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAppStore } from '@/stores/useAppStore'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -17,9 +17,19 @@ import { useToast } from '@/hooks/use-toast'
 import { ShieldCheck, Users, Key, Award, Activity } from 'lucide-react'
 
 export default function AdminPage() {
-  const { currentUser, users, staffPassword, changePassword } = useAppStore()
+  const { currentUser, users, staffPassword, changePassword, fetchUsers } = useAppStore()
   const { toast } = useToast()
   const [newPassword, setNewPassword] = useState(staffPassword)
+
+  useEffect(() => {
+    if (currentUser?.role === 'admin') {
+      fetchUsers()
+    }
+  }, [currentUser?.role, fetchUsers])
+
+  useEffect(() => {
+    setNewPassword(staffPassword)
+  }, [staffPassword])
 
   if (!currentUser || currentUser.role !== 'admin') {
     return <Navigate to="/" />
@@ -27,8 +37,8 @@ export default function AdminPage() {
 
   const staffUsers = users.filter((u) => u.role === 'staff')
 
-  const handleSavePassword = () => {
-    changePassword(newPassword)
+  const handleSavePassword = async () => {
+    await changePassword(newPassword)
     toast({ title: 'Sucesso', description: 'Senha da equipe atualizada.' })
   }
 
