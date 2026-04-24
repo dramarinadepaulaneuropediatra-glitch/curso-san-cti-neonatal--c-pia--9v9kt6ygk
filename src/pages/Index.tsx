@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Clock, Target, Users, PlayCircle, LogIn, ShieldAlert } from 'lucide-react'
+import { Clock, Target, Users, PlayCircle, LogIn } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -17,6 +17,7 @@ export default function Index() {
   const [staffName, setStaffName] = useState('')
   const [staffPassword, setStaffPassword] = useState('')
   const [adminEmail, setAdminEmail] = useState('')
+  const [adminPassword, setAdminPassword] = useState('')
 
   const handleStaffLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,18 +33,18 @@ export default function Index() {
     if (success) {
       toast({ title: 'Bem-vindo', description: `Acesso liberado para ${staffName}.` })
     } else {
-      toast({ title: 'Erro', description: 'Senha da equipe incorreta.', variant: 'destructive' })
+      toast({ title: 'Erro', description: 'Senha de Acesso incorreta.', variant: 'destructive' })
     }
   }
 
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    const success = loginAdmin(adminEmail)
+    const success = loginAdmin(adminEmail, adminPassword)
     if (success) {
       toast({ title: 'Admin', description: 'Acesso administrativo liberado.' })
       navigate('/admin')
     } else {
-      toast({ title: 'Erro', description: 'Email não autorizado.', variant: 'destructive' })
+      toast({ title: 'Erro', description: 'Credenciais não autorizadas.', variant: 'destructive' })
     }
   }
 
@@ -52,8 +53,12 @@ export default function Index() {
       <div className="flex min-h-[80vh] items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg border-none bg-white/50 backdrop-blur-sm">
           <CardHeader className="text-center pb-6">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <ShieldAlert className="w-8 h-8 text-primary" />
+            <div className="flex justify-center mb-6">
+              <img
+                src="https://img.usecurling.com/i?q=fhemig&color=blue&shape=fill"
+                alt="FHEMIG"
+                className="h-16 object-contain"
+              />
             </div>
             <CardTitle className="text-2xl font-bold text-slate-800">Acesso ao Curso</CardTitle>
             <p className="text-sm text-slate-500 mt-2">Síndrome de Abstinência Neonatal (SAN)</p>
@@ -61,7 +66,7 @@ export default function Index() {
           <CardContent>
             <Tabs defaultValue="staff" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="staff">Equipe CTI</TabsTrigger>
+                <TabsTrigger value="staff">Profissional HJK</TabsTrigger>
                 <TabsTrigger value="admin">Administração</TabsTrigger>
               </TabsList>
               <TabsContent value="staff">
@@ -76,11 +81,11 @@ export default function Index() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Senha da Equipe</Label>
+                    <Label htmlFor="password">Senha de Acesso ao Curso</Label>
                     <Input
                       id="password"
                       type="password"
-                      placeholder="Senha do HJK"
+                      placeholder="Senha fornecida pela coordenação"
                       value={staffPassword}
                       onChange={(e) => setStaffPassword(e.target.value)}
                     />
@@ -100,6 +105,16 @@ export default function Index() {
                       placeholder="dramarinadepaulaneuropediatra@gmail.com"
                       value={adminEmail}
                       onChange={(e) => setAdminEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="adminPassword">Senha</Label>
+                    <Input
+                      id="adminPassword"
+                      type="password"
+                      placeholder="Senha do Administrador"
+                      value={adminPassword}
+                      onChange={(e) => setAdminPassword(e.target.value)}
                     />
                   </div>
                   <Button type="submit" variant="secondary" className="w-full">
@@ -123,6 +138,13 @@ export default function Index() {
           className="w-full h-72 md:h-96 object-cover opacity-90 transition-transform duration-1000 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/40 flex flex-col justify-center p-6 md:p-12">
+          <div className="mb-6">
+            <img
+              src="https://img.usecurling.com/i?q=fhemig&color=white&shape=fill"
+              alt="FHEMIG Logo Branca"
+              className="h-10 md:h-12 object-contain opacity-90"
+            />
+          </div>
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
             Síndrome de Abstinência Neonatal (SAN): Manejo Baseado em Evidências no CTI Neonatal
           </h1>
@@ -187,7 +209,7 @@ export default function Index() {
             </div>
             <h3 className="font-semibold text-lg text-slate-800">Tempo Estimado</h3>
             <p className="text-sm text-slate-600">
-              Cerca de 90 minutos, divididos em 8 módulos interativos e objetivos.
+              Cerca de 120 minutos, divididos em 8 módulos interativos e objetivos.
             </p>
           </CardContent>
         </Card>

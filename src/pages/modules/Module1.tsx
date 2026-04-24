@@ -1,24 +1,16 @@
-import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { ModuleFooter } from '@/components/ModuleFooter'
-import { useToast } from '@/hooks/use-toast'
 import { Stethoscope } from 'lucide-react'
 
 export default function Module1() {
-  const [feedback, setFeedback] = useState('')
-  const { toast } = useToast()
-
-  const handleSubmit = () => {
-    if (!feedback.trim()) return
-    toast({
-      title: 'Feedback registrado com sucesso!',
-      description: 'Obrigado por compartilhar sua perspectiva clínica.',
-    })
-    setFeedback('')
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3 border-b pb-4">
@@ -26,7 +18,7 @@ export default function Module1() {
           <Stethoscope className="text-primary w-6 h-6" />
         </div>
         <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-800">
-          Módulo 1: Introdução
+          Módulo 1: Introdução & Abordagens
         </h2>
       </div>
 
@@ -43,27 +35,70 @@ export default function Module1() {
         </p>
       </div>
 
-      <Card className="mt-8 border-primary/20 shadow-sm bg-blue-50/30">
-        <CardHeader>
-          <CardTitle className="text-primary text-xl">
-            Interatividade: Quebra-gelo Clínico
-          </CardTitle>
+      <Card className="border-slate-200 shadow-md print:shadow-none mt-8">
+        <CardHeader className="bg-slate-50/80 border-b print:bg-white">
+          <CardTitle>Comparativo: FNAST vs ESC</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <label className="text-sm font-medium text-slate-700 block">
-            Qual a maior dificuldade que você já enfrentou ao lidar com um caso de SAN?
-          </label>
-          <Textarea
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-            placeholder="Ex: Distinguir choro de fome do choro neurológico..."
-            className="min-h-[120px] bg-white resize-none"
-          />
-          <div className="flex justify-end">
-            <Button onClick={handleSubmit} disabled={!feedback.trim()}>
-              Enviar Relato
-            </Button>
-          </div>
+        <CardContent className="p-0 sm:p-6 overflow-x-auto print:p-0">
+          <Table className="min-w-[600px] print:w-full border-collapse">
+            <TableHeader>
+              <TableRow className="bg-slate-100 hover:bg-slate-100 print:bg-slate-100">
+                <TableHead className="w-[150px] font-bold text-slate-800">Característica</TableHead>
+                <TableHead className="font-bold text-slate-800 border-l border-slate-200 print:border-slate-400">
+                  FNAST (Finnegan)
+                </TableHead>
+                <TableHead className="font-bold text-slate-800 border-l border-slate-200 print:border-slate-400">
+                  ESC (Eat, Sleep, Console)
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-medium bg-slate-50 print:bg-transparent border-t print:border-slate-300">
+                  Foco
+                </TableCell>
+                <TableCell className="border-l border-t border-slate-100 print:border-slate-300 text-slate-600">
+                  Identificação e soma de sinais patológicos isolados.
+                </TableCell>
+                <TableCell className="border-l border-t border-slate-100 bg-emerald-50/30 print:bg-transparent print:border-slate-300 text-slate-600">
+                  Avaliação do funcionamento geral e bem-estar.
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium bg-slate-50 print:bg-transparent border-t print:border-slate-300">
+                  Métrica
+                </TableCell>
+                <TableCell className="border-l border-t border-slate-100 print:border-slate-300 text-slate-600">
+                  Escore ponderado complexo (21 a 31 itens).
+                </TableCell>
+                <TableCell className="border-l border-t border-slate-100 bg-emerald-50/30 print:bg-transparent print:border-slate-300 text-slate-600">
+                  Funcional (Sim/Não para 3 domínios claros).
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium bg-slate-50 print:bg-transparent border-t print:border-slate-300">
+                  Intervenção Primária
+                </TableCell>
+                <TableCell className="border-l border-t border-slate-100 print:border-slate-300 text-slate-600">
+                  Baseada num escore limite subjetivo (ex: &gt; 8).
+                </TableCell>
+                <TableCell className="border-l border-t border-slate-100 bg-emerald-50/30 print:bg-transparent print:border-slate-300 text-slate-600">
+                  Otimização exaustiva do suporte não-farmacológico.
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium bg-slate-50 print:bg-transparent border-t print:border-slate-300">
+                  Impacto Clínico
+                </TableCell>
+                <TableCell className="border-l border-t border-slate-100 print:border-slate-300 text-slate-600">
+                  Aumento do uso de opioides e do tempo de internação.
+                </TableCell>
+                <TableCell className="border-l border-t border-slate-100 bg-emerald-50/30 print:bg-transparent font-medium text-emerald-700 print:text-black print:border-slate-300">
+                  Redução de medicação e alta hospitalar precoce.
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
 

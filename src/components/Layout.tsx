@@ -39,14 +39,14 @@ export default function Layout() {
   }
 
   const modules = [
-    { id: 1, title: 'Introdução', path: '/module/1' },
+    { id: 1, title: 'Introdução & Tabela', path: '/module/1' },
     { id: 2, title: 'Quadro Clínico', path: '/module/2' },
-    { id: 3, title: 'Fatores Predisponentes', path: '/module/3' },
-    { id: 4, title: 'Avaliação', path: '/module/4' },
-    { id: 5, title: 'Tratamento', path: '/module/5' },
+    { id: 3, title: 'Escala Finnegan', path: '/module/3' },
+    { id: 4, title: 'Casos Clínicos', path: '/module/4' },
+    { id: 5, title: 'Guia Visual (ESC)', path: '/module/5' },
     { id: 6, title: 'Guia de Medicações', path: '/module/6' },
-    { id: 7, title: 'Conclusão', path: '/module/7' },
-    { id: 8, title: 'Referências', path: '/module/8' },
+    { id: 7, title: 'Protocolos de Transição', path: '/module/7' },
+    { id: 8, title: 'Avaliação Final', path: '/module/8' },
   ]
 
   return (

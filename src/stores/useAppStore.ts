@@ -7,6 +7,7 @@ export type User = {
   role: 'staff' | 'admin'
   answers: Record<string, string>
   quizScore: number | null
+  quizAttempts: number
   completedModules: number[]
 }
 
@@ -27,6 +28,7 @@ const defaultState: AppState = {
       role: 'admin',
       answers: {},
       quizScore: null,
+      quizAttempts: 0,
       completedModules: [],
     },
   ],
@@ -69,6 +71,7 @@ export const appStore = {
           role: 'staff',
           answers: {},
           quizScore: null,
+          quizAttempts: 0,
           completedModules: [],
         }
         state = { ...state, users: [...state.users, user], currentUser: user }
@@ -80,8 +83,8 @@ export const appStore = {
     }
     return false
   },
-  loginAdmin(email: string): boolean {
-    if (email === 'dramarinadepaulaneuropediatra@gmail.com') {
+  loginAdmin(email: string, password?: string): boolean {
+    if (email === 'dramarinadepaulaneuropediatra@gmail.com' && password === 'Skip@Pass') {
       const admin = state.users.find((u) => u.email === email)
       if (admin) {
         state = { ...state, currentUser: admin }
@@ -115,7 +118,11 @@ export const appStore = {
   },
   saveQuizScore(score: number) {
     if (state.currentUser) {
-      const updatedUser = { ...state.currentUser, quizScore: score }
+      const updatedUser = {
+        ...state.currentUser,
+        quizScore: score,
+        quizAttempts: (state.currentUser.quizAttempts || 0) + 1,
+      }
       state = {
         ...state,
         currentUser: updatedUser,
