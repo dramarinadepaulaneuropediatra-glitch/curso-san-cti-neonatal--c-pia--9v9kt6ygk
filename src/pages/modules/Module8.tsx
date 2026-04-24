@@ -50,6 +50,37 @@ const questions = [
     ],
     correct: 'c',
   },
+  {
+    id: 'q4',
+    text: 'Estudo de Caso 1: RN a termo, exposto à metadona na gestação, apresenta choro consolável após enrolamento (swaddling) e contato pele a pele, dormiu 3 horas seguidas e sugou bem na última mamada. Qual a conduta adequada segundo a abordagem ESC?',
+    options: [
+      { value: 'a', label: 'Iniciar morfina 0.05 mg/kg imediatamente.' },
+      {
+        value: 'b',
+        label:
+          'Manter suporte não-farmacológico e observação rigorosa, pois o RN está funcionalmente bem.',
+      },
+      { value: 'c', label: 'Transferir para UTI pediátrica e prescrever fenobarbital.' },
+    ],
+    correct: 'b',
+  },
+  {
+    id: 'q5',
+    text: 'Estudo de Caso 2: RN exposto a fentanil endovenoso prolongado, apresenta agitação extrema, impossibilidade de dormir após as dietas, tremores severos e vômitos frequentes, não respondendo às medidas de suporte não-farmacológico após múltiplas tentativas. Qual a conduta farmacológica mais indicada?',
+    options: [
+      { value: 'a', label: 'Dobrar a dose do fentanil endovenoso e aguardar 48h.' },
+      {
+        value: 'b',
+        label: 'Aumentar a oferta de dieta e enrolamento, evitando medicações a todo custo.',
+      },
+      {
+        value: 'c',
+        label:
+          'Considerar o início do tratamento farmacológico de resgate (ex: morfina) e planejar protocolo de desmame ou transição.',
+      },
+    ],
+    correct: 'c',
+  },
 ]
 
 export default function Module8() {

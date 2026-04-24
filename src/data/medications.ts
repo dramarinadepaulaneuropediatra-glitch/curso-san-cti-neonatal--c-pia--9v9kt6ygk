@@ -60,7 +60,7 @@ export const medications = [
     id: 6,
     name: 'Clorpromazina',
     use: 'Adjuvante (Uso Restrito)',
-    dosage: '0.5 mg a 1 mg/kg/dose até de 6 em 6 horas (VO/IM)',
+    dosage: '0.5 mg a 1 mg/kg/dose a cada 6 horas (VO/IM)',
     weaning: 'Desmame gradual conforme tolerado (geralmente não excede 5 dias).',
     prosCons:
       'Prós: Auxilia no controle de agitação grave em falha de outros agentes. Contras: Risco de efeitos extrapiramidais e redução do limiar convulsivo.',

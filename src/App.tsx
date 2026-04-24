@@ -15,29 +15,32 @@ import Module6 from './pages/modules/Module6'
 import Module7 from './pages/modules/Module7'
 import Module8 from './pages/modules/Module8'
 import AdminPage from './pages/AdminPage'
+import { AppProvider } from '@/stores/useAppStore'
 
 const App = () => (
-  <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Index />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/module/1" element={<Module1 />} />
-          <Route path="/module/2" element={<Module2 />} />
-          <Route path="/module/3" element={<Module3 />} />
-          <Route path="/module/4" element={<Module4 />} />
-          <Route path="/module/5" element={<Module5 />} />
-          <Route path="/module/6" element={<Module6 />} />
-          <Route path="/module/7" element={<Module7 />} />
-          <Route path="/module/8" element={<Module8 />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </TooltipProvider>
-  </BrowserRouter>
+  <AppProvider>
+    <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Index />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/module/1" element={<Module1 />} />
+            <Route path="/module/2" element={<Module2 />} />
+            <Route path="/module/3" element={<Module3 />} />
+            <Route path="/module/4" element={<Module4 />} />
+            <Route path="/module/5" element={<Module5 />} />
+            <Route path="/module/6" element={<Module6 />} />
+            <Route path="/module/7" element={<Module7 />} />
+            <Route path="/module/8" element={<Module8 />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </TooltipProvider>
+    </BrowserRouter>
+  </AppProvider>
 )
 
 export default App
