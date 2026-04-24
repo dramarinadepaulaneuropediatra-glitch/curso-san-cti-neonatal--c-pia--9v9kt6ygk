@@ -17,7 +17,7 @@ migrate(
     app.save(collection)
 
     const record = new Record(collection)
-    record.set('id', 'singleton_settings1')
+    record.set('id', 'settings0000001')
     record.set('staffPassword', 'hjk')
     app.save(record)
   },

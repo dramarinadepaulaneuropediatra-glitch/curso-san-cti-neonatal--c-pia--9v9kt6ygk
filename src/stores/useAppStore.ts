@@ -43,7 +43,7 @@ export const appStore = {
   },
   async init() {
     try {
-      const settings = await pb.collection('settings').getOne('singleton_settings1')
+      const settings = await pb.collection('settings').getOne('settings0000001')
       state = { ...state, staffPassword: settings.staffPassword }
     } catch (e) {
       console.error('Settings not found or not created yet')
@@ -166,7 +166,7 @@ export const appStore = {
   },
   async changePassword(newPassword: string) {
     try {
-      await pb.collection('settings').update('singleton_settings1', { staffPassword: newPassword })
+      await pb.collection('settings').update('settings0000001', { staffPassword: newPassword })
       state = { ...state, staffPassword: newPassword }
       notify()
     } catch (e) {
